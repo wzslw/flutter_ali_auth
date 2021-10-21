@@ -997,7 +997,7 @@
 
 #pragma mark  assets -> 转换成真实路径
 + (NSString *) changeUriToPath:(NSString *) key{
-  NSString* keyPath = [[self flutterVC] lookupKeyForAsset: key];
+  NSString* keyPath = [FlutterDartProject lookupKeyForAsset: key];
   NSString* path = [[NSBundle mainBundle] pathForResource: keyPath ofType:nil];
   return path;
 }
@@ -1006,34 +1006,6 @@
   NSString* path = [self changeUriToPath: key];
   UIImage * image = [UIImage imageWithContentsOfFile: path];
   return image;
-}
-
-+(FlutterViewController *)flutterVC{
-  return (FlutterViewController *)[self findCurrentViewController];
-}
-
-+ (UIViewController *)getRootViewController {
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    return window.rootViewController;
-}
-
-#pragma mark  ======在view上添加UIViewController========
-+ (UIViewController *)findCurrentViewController{
-    UIWindow *window = [[UIApplication sharedApplication].delegate window];
-    UIViewController *topViewController = [window rootViewController];
-    while (true) {
-        if (topViewController.presentedViewController) {
-            topViewController = topViewController.presentedViewController;
-        } else if ([topViewController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)topViewController topViewController]) {
-            topViewController = [(UINavigationController *)topViewController topViewController];
-        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
-            UITabBarController *tab = (UITabBarController *)topViewController;
-            topViewController = tab.selectedViewController;
-        } else {
-            break;
-        }
-    }
-    return topViewController;
 }
 
 +(UIColor *) getColor:(NSString *)hexColor{
